@@ -1,0 +1,46 @@
+<div style="padding: 20px;">
+  <h1>Scraper UI</h1>
+
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="targetUrl">URL to find:</label>
+      <input id="targetUrl" type="text" formControlName="targetUrl">
+      @if(searchForm.controls['targetUrl'].invalid && (searchForm.controls['targetUrl'].dirty || searchForm.controls['targetUrl'].touched)) {
+        <small style="color: red;">Target URL is required.</small>
+      }
+    </div>
+    <br>
+    <div>
+      <label for="query">Google Search keywords: </label>
+      <input id="query" type="text" formControlName="query">
+    </div>
+    <br>
+
+    <button type="button" (click)="onScrape()" [disabled]="!searchForm.valid || isLoading" style="margin-left: 10px;">
+      {{ isLoading ? 'Scraping...' : 'Scrape Rankings via dotnet Api' }}
+    </button>
+  </form>
+
+
+  @if(scrapeResult) {
+    <div style="margin-top: 10px; padding: 10px; border: 1px solid green; background-color: #e8f5e9;">
+      {{ scrapeResult }}
+    </div>
+  }
+  @if(scrapeError) {
+    <div style="margin-top: 10px; padding: 10px; border: 1px solid red; background-color: #ffebee; color: red;">
+      {{ scrapeError }}
+    </div>
+  }
+
+  <div style="margin-top: 10px; padding: 10px; border: 1px solid red; background-color: #ffebee; color: red;">
+    <p>The below was meant to render the google search results page from which i could extract the result and query the number of hits.
+      Unfortunately to set the http headers right this would have needed me to request via API.
+    </p>
+  </div>
+  <button type="submit" [disabled]="!searchForm.valid" style="margin-top: 10px;">Show Google Search</button>
+  <h2>Google Search Preview</h2>
+  <iframe [src]="iframeUrl" width="100%" height="500px" style="border: 1px solid #ccc;"></iframe>
+</div>
+
+
